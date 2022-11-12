@@ -2,6 +2,7 @@ package org.launchcode.techjobs.persistent.controllers;
 
 import org.launchcode.techjobs.persistent.models.Employer;
 import org.launchcode.techjobs.persistent.models.Job;
+import org.launchcode.techjobs.persistent.models.Skill;
 import org.launchcode.techjobs.persistent.models.data.EmployerRepository;
 import org.launchcode.techjobs.persistent.models.data.JobRepository;
 import org.launchcode.techjobs.persistent.models.data.SkillRepository;
@@ -55,6 +56,8 @@ public class HomeController {
             model.addAttribute("title", "Add Job");
             return "add";
         }
+        List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
+        newJob.setSkills(skillObjs);
 
         Optional<Employer> newEmployer = employerRepository.findById(employerId);  //creates optional employer
         if (newEmployer.isPresent()) {   //checking if the optional employer exist
@@ -63,16 +66,23 @@ public class HomeController {
             //jobRepository and other repositories are the connection to the MySQL database
         }
         jobRepository.save(newJob); //saves the new job to the reposoitory
-            return "redirect:";
+        return "redirect:";
 
         }
 
 
-
     @GetMapping("view/{jobId}")
     public String displayViewJob(Model model, @PathVariable int jobId) {
+        Optional optJob = jobRepository.findById(jobId);
+        if (optJob.isPresent()) {
+            Job job = (Job) optJob.get();
+            model.addAttribute("job",job);
+            return "view";
+        } else {
+            return "redirect:../";
+        }
 
-        return "view";
+        //return "view";
     }
 
 
