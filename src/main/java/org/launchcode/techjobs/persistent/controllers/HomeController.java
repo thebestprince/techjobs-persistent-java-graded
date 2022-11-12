@@ -60,10 +60,9 @@ public class HomeController {
         if (newEmployer.isPresent()) {   //checking if the optional employer exist
             Employer employer = newEmployer.get(); // setting the optional employer to an actual employer
             newJob.setEmployer(employer); //setting new jobs employer to the equal id
-            jobRepository.save(newJob); //saves the new job to the reposoitory
             //jobRepository and other repositories are the connection to the MySQL database
-//        skillRepository.findAll()
         }
+        jobRepository.save(newJob); //saves the new job to the reposoitory
             return "redirect:";
 
         }
